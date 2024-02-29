@@ -12,10 +12,19 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
     'react/jsx-no-target-blank': 'off',
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
   },
+  overrides: [
+    {
+      files: ['**/*.jsx'],  // Adjust the pattern based on your project structure
+      rules: {
+        'no-unused-vars': 'off',
+      },
+    },
+  ],
 }

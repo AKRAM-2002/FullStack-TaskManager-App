@@ -1,16 +1,20 @@
+import './globals.css';
+import {Sidebar} from './components/Sidebar/Sidebar'
 
-
-import './App.css'
-import SplitPane from 'react-split-pane';
+import { GlobalStylesProviders } from './providers/GlobalStylesProviders';
+import Home from './components/Content/Content';
+import {ContextProvider} from './providers/ContextProvider';
 
 function App() {
 
   return (
     <>
-      <SplitPane split="horizontal" minSize={50}>
-        <div style={{background: "red", height:"100%", width:"100%"}}></div>
-        <div style={{background: "yellow", height:"100%"}}></div>
-    </SplitPane>
+    <ContextProvider>
+      <GlobalStylesProviders>
+        <Sidebar/>
+        <Home/>
+      </GlobalStylesProviders>
+    </ContextProvider>
     </>
   )
 }
