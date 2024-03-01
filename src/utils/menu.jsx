@@ -2,8 +2,7 @@ import ListAltIcon from '@mui/icons-material/Assignment';
 import TimerIcon from '@mui/icons-material/AvTimer';
 import InsertChartIcon from '@mui/icons-material/BarChart';
 import SettingsIcon from '@mui/icons-material/Settings';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 
 const dashboardMenu = [
   {

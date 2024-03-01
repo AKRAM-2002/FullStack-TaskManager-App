@@ -3,10 +3,20 @@ import { useGlobalState } from "../../context/globalProvider";
 import avatar from "../../assets/avatar.jpeg";
 import dashboardMenu from "../../utils/menu";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+
 
 export const Sidebar = () => {
   const { theme } = useGlobalState();
   const [visibleSubMenus, setVisibleSubMenus] = useState({});
+
+
+  const handleSignOut = () => {
+    // Add your signout logic here
+    console.log('Signing out...');
+  };
+
 
   const toggleSubmenu = (menuItem) => {
     setVisibleSubMenus((prevVisibleSubmenus) => ({
@@ -20,7 +30,7 @@ export const Sidebar = () => {
       <ProfileStyled>
         <ProfileOverlay></ProfileOverlay>
         <ProfileImg>
-          <img src={avatar} alt="profile" width={70} height={70} />
+          <img src={avatar} alt="profile" />
         </ProfileImg>
         <ProfileName>
           <span>Akram </span>
@@ -44,7 +54,7 @@ export const Sidebar = () => {
                     <ul className="submenu">
                       {menuItem.submenu.map((submenuItem) => (
                         <li key={submenuItem.label}>
-                          <a href={submenuItem.path}>
+                          <Link to={submenuItem.path}>
                             {submenuItem.icon && (
                               <span
                                 className="icon"
@@ -54,25 +64,31 @@ export const Sidebar = () => {
                               </span>
                             )}
                             <span className="label">{submenuItem.label}</span>
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
                   )}
                 </>
               ) : (
-                <a href={menuItem.path}>
+                <Link to={menuItem.path}>
                   {menuItem.icon && (
                     <span style={{ color: menuItem.color }}>
                       {menuItem.icon}
                     </span>
                   )}
                   <span className="label">{menuItem.label}</span>
-                </a>
+                </Link>
               )}
             </li>
           ))}
         </ul>
+
+        <SignoutButton onClick={handleSignOut}>
+          <ExitToAppIcon />
+          <span className="label">Sign Out</span>
+        </SignoutButton>
+        
       </div>
     </SidebarStyled>
   );
@@ -84,7 +100,7 @@ const SidebarStyled = styled.nav`
   background-color: ${(props) => props.theme.colorBg2};
   border: 2px solid ${(props) => props.theme.borderColor2};
   border-radius: 1rem;
-  height: 80vh;
+  height: 90vh;
   padding: 1rem;
   font-size: 10px;
 
@@ -103,10 +119,12 @@ const SidebarStyled = styled.nav`
       background-color: hsl(0, 0%, 20%);
       margin: 8px 0;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: space-between;
       align-items: center;
       color: white;
+      
+      
     }
 
     ul li:hover {
@@ -115,17 +133,17 @@ const SidebarStyled = styled.nav`
       transition: 0.5s;
     }
 
-    a:hover {
+    li:hover {
       color: black;
     }
 
-    a {
+    li {
       text-decoration: none;
       color: ${(props) => props.theme.colorFontPrimary};
       display: flex;
       align-items: center;
-      gap: 0.5em;
-      font-size: 12px;
+      gap: 1.9em;
+      font-size: 13px;
       font-weight: 600;
 
       .label {
@@ -143,14 +161,14 @@ const SidebarStyled = styled.nav`
 
 const ProfileStyled = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   position: relative;
   padding: 1rem;
-  background-color: ${(props) => props.theme.colorBg2};
-  border-radius: 3rem;
-`;
+  gap: 0.5em;
+
+  `;
 
 const ProfileOverlay = styled.div`
   position: absolute;
@@ -158,23 +176,50 @@ const ProfileOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background-color: ${(props) => props.theme.colorGrey3};
+  border-radius: 50%;
 `;
 
 const ProfileImg = styled.div`
   img {
     border-radius: 50%;
-    /* Add any other image styles */
+    flex-shrink: 0;
   }
 `;
 
 const ProfileName = styled.h1`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  gap: 0.3em;
+  gap: 0.2em;
+  font-size: 0.9rem;
+
   span {
     display: block;
     color ${(props) => props.theme.colorFontPrimary};
+  }
+`;
+
+const SignoutButton = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: ${(props) => props.theme.colorFontPrimary};
+  gap: 0.5em;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4rem;
+  background-color: hsl(75, 94%, 57%);
+  border-radius: 15px;
+  padding: 10px 20px;
+  color: black;
+
+  .label {
+    margin-right: 0.3rem;
+  }
+
+  &:hover {
+    color: white;
   }
 `;

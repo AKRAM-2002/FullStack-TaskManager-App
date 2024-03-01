@@ -9,7 +9,7 @@ export const GlobalUpdateContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
 
-    // eslint-disable-next-line no-unused-vars
+
     const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
     const theme = themes[selectedThemeIndex];
 
