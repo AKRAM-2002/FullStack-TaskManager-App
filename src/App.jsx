@@ -17,7 +17,6 @@ function App() {
       <Router> 
             <Sidebar />
             <Home />
-            
         </Router>
       </GlobalStylesProviders>
     </ContextProvider>

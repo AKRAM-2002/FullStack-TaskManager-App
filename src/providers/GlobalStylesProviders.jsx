@@ -15,10 +15,11 @@ GlobalStylesProviders.propTypes = {
 
 
 const GlobalStyles = styled.div`
-  padding: 2.5rem;
+  padding: 1.5rem;
   display: flex;
   gap: 2.5rem;
   height: 100%;
+  width: 100%;
 `;
 
 export default GlobalStylesProviders

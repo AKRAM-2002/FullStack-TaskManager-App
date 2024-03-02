@@ -5,15 +5,17 @@ import dashboardMenu from "../../utils/menu";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ThemeSwitchButton from "../Button/ThemeSwitchButton"
 
 
 export const Sidebar = () => {
+
   const { theme } = useGlobalState();
   const [visibleSubMenus, setVisibleSubMenus] = useState({});
 
 
+
   const handleSignOut = () => {
-    // Add your signout logic here
     console.log('Signing out...');
   };
 
@@ -32,7 +34,7 @@ export const Sidebar = () => {
         <ProfileImg>
           <img src={avatar} alt="profile" />
         </ProfileImg>
-        <ProfileName>
+        <ProfileName theme={theme}>
           <span>Akram </span>
           <span>Boutzouga</span>
         </ProfileName>
@@ -84,15 +86,29 @@ export const Sidebar = () => {
           ))}
         </ul>
 
-        <SignoutButton onClick={handleSignOut}>
-          <ExitToAppIcon />
-          <span className="label">Sign Out</span>
-        </SignoutButton>
+        <SidebarBottom>
+          <SignoutButton theme={theme} onClick={handleSignOut}>
+            <ExitToAppIcon />
+            <span className="label">Sign Out</span>
+          </SignoutButton>
+          <ThemeSwitchButton/>
+        </SidebarBottom>
+
+
         
       </div>
     </SidebarStyled>
   );
 };
+
+const SidebarBottom = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 7.4rem;
+`
 
 const SidebarStyled = styled.nav`
   position: relative;
@@ -100,7 +116,7 @@ const SidebarStyled = styled.nav`
   background-color: ${(props) => props.theme.colorBg2};
   border: 2px solid ${(props) => props.theme.borderColor2};
   border-radius: 1rem;
-  height: 90vh;
+  height: 95vh;
   padding: 1rem;
   font-size: 10px;
 
@@ -109,7 +125,7 @@ const SidebarStyled = styled.nav`
     flex-direction: column;
     align-items: flex-start;
     margin-top: 15px;
-    padding-left: 1rem;
+    margin-right: 0.9em;
 
     li {
       margin-bottom: 1rem;
@@ -120,11 +136,12 @@ const SidebarStyled = styled.nav`
       margin: 8px 0;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       color: white;
-      
-      
+    }
+    li span:nth-child(2){
+      margin-left: 5px;
     }
 
     ul li:hover {
@@ -142,7 +159,7 @@ const SidebarStyled = styled.nav`
       color: ${(props) => props.theme.colorFontPrimary};
       display: flex;
       align-items: center;
-      gap: 1.9em;
+      
       font-size: 13px;
       font-weight: 600;
 
@@ -156,6 +173,7 @@ const SidebarStyled = styled.nav`
       padding-left: 1rem;
       margin-top: 0.5rem;
     }
+   
   }
 `;
 
@@ -166,8 +184,18 @@ const ProfileStyled = styled.div`
   justify-content: center;
   position: relative;
   padding: 1rem;
-  gap: 0.5em;
-
+  gap: 1.5em;
+  &:hover{
+    cursor: pointer;
+    opacity: 0.5;
+   
+    transition: 0.5s;
+    border-radius: 0.5em 0.5em 0.5em;
+    
+    img{
+      transform: scale(1.1);
+    }
+  }
   `;
 
 const ProfileOverlay = styled.div`
@@ -176,7 +204,6 @@ const ProfileOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${(props) => props.theme.colorGrey3};
   border-radius: 50%;
 `;
 
@@ -194,10 +221,11 @@ const ProfileName = styled.h1`
   justify-content: center;
   gap: 0.2em;
   font-size: 0.9rem;
+  color: ${(props) => props.theme.colorFontPrimary};
 
   span {
     display: block;
-    color ${(props) => props.theme.colorFontPrimary};
+    ;
   }
 `;
 
@@ -209,10 +237,10 @@ const SignoutButton = styled.div`
   gap: 0.5em;
   font-size: 12px;
   font-weight: 600;
-  margin-top: 4rem;
-  background-color: hsl(75, 94%, 57%);
+  
+  background-color: ${(props) => props.theme.btnColorPrimary};
   border-radius: 15px;
-  padding: 10px 20px;
+  padding: 10px 10px;
   color: black;
 
   .label {

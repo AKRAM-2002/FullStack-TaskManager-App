@@ -46,6 +46,7 @@ const themes = [
     colorIcons3: "rgba(249,249,249, 0.08)",
     colorIcons4: "rgba(0,0,0, 0.3)",
     marLRSm: "0 1rem",
+    btnColorPrimary: "hsl(75, 94%, 57%)",
   },
   {
     avatar:"../assets/avatar.jpeg",
@@ -129,6 +130,7 @@ const themes = [
     colorIcons3: "rgba(249,249,249, 0.08)",
     colorIcons4: "rgba(0,0,0, 0.3)",
     marLRSm: "0 1rem",
+    btnColorPrimary: "hsl(75, 94%, 57%)",
   },
 ];
 export default themes;
