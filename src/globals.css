@@ -14,3 +14,21 @@ body{
 
   height: 100vh;
 }
+
+.cl-formButtonPrimary{
+  background-color: #181818;
+  border-color: #181818;
+}
+.cl-formButtonPrimary:hover{
+  background-color: hsl(75, 94%, 57%);
+  color: #181818;
+}
+.cl-footerActionLink{
+  color: #181818;
+  font-weight: 700;
+  
+}
+.cl-footerActionLink:hover{
+  color: hsl(75, 94%, 57%);
+  text-decoration: none;
+}

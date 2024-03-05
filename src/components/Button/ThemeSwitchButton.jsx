@@ -41,7 +41,7 @@ const SwitchButton = styled.label`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ;
+    background-color: black;
     -webkit-transition: 0.4s;
     transition: 0.4s;
     border-radius: 34px;

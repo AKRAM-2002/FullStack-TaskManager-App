@@ -1,14 +1,16 @@
 import styled from "styled-components"
 import MotivationalQuote from "../MotivationalComponent"
+import Tasks from "../../pages/Tasks/Tasks"
+import { useGlobalState } from "../../context/globalProvider";
 
 export default function Home(){
+  const { theme } = useGlobalState(); 
     return (
       <>
       <HomeStyled>
           <MotivationalQuote/>
-          
-          <ContentStyled>
-          
+          <ContentStyled theme={theme}>
+            <Tasks/>
           </ContentStyled>
       </HomeStyled>
       </>
@@ -22,8 +24,9 @@ const ContentStyled = styled.div`
   flex-direction: column;
   position: relative;
   width: 100%;
-  background-color: ${(props) => props.theme.colorBg2};
+  background-color: ${(props) => props.theme.borderColor2};
   border: 1px solid ${(props) => props.theme.borderColor2};
+  border-opacity: 5;
   border-radius: 1rem;
   height: 80vh;
   padding: 1rem;

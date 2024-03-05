@@ -46,7 +46,6 @@ const MotivationalQuoteSection = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  
   background-color: ${(props) => props.theme.borderColor2};
   padding: 0px;
   border-radius: 5px;

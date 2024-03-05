@@ -2,41 +2,52 @@ import styled from "styled-components";
 import { useGlobalState } from "../../context/globalProvider";
 import avatar from "../../assets/avatar.jpeg";
 import dashboardMenu from "../../utils/menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import ThemeSwitchButton from "../Button/ThemeSwitchButton"
-
+import ThemeSwitchButton from "../Button/ThemeSwitchButton";
+import {useClerk, useUser} from '@clerk/clerk-react';
 
 export const Sidebar = () => {
 
+  const clerk = useClerk();
+  const { isSignedIn, user, isLoaded, imageUrl} = useUser();
+
+  const handleSignOut = async () => {
+    try {
+      await clerk.signOut();
+      console.log('User signed out successfully');
+    } catch (error) {
+      console.error('Error signing out:', error.message);
+    }
+  };
+
+  const use = useUser(); 
+
+  useEffect(()=>{
+    console.log(use)
+  }, [user])
+
+
+
+
   const { theme } = useGlobalState();
   const [visibleSubMenus, setVisibleSubMenus] = useState({});
+  const [isDropdownHovered, setIsDropdownHovered] = useState(false);
 
+  
 
-
-  const handleSignOut = () => {
-    console.log('Signing out...');
-  };
-
-
-  const toggleSubmenu = (menuItem) => {
-    setVisibleSubMenus((prevVisibleSubmenus) => ({
-      ...prevVisibleSubmenus,
-      [menuItem.id]: !prevVisibleSubmenus[menuItem.id],
-    }));
-  };
-
+  
   return (
     <SidebarStyled theme={theme}>
       <ProfileStyled>
         <ProfileOverlay></ProfileOverlay>
         <ProfileImg>
-          <img src={avatar} alt="profile" />
+          <img src={user.imageUrl} alt="profile" />
         </ProfileImg>
         <ProfileName theme={theme}>
-          <span>Akram </span>
-          <span>Boutzouga</span>
+          <span>{user.firstName}</span>
+          <span>{user.lastName}</span>
         </ProfileName>
       </ProfileStyled>
 
@@ -47,10 +58,22 @@ export const Sidebar = () => {
               {menuItem.submenu ? (
                 <>
                   <span
-                    className="label"
-                    onClick={() => toggleSubmenu(menuItem)}
-                  >
+                    className="label">
+                     <span className="icon">{menuItem.icon}</span>
                     {menuItem.label}
+                  </span>
+                  <span 
+                      className="iconRight"
+                      onMouseEnter={() => setIsDropdownHovered(true)}
+                      onMouseLeave={() => setIsDropdownHovered(false)}
+                  >
+                    {
+                      isDropdownHovered ? (
+                      <img src={menuItem.iconRightBlack} alt="dropdown" />
+                      ) : (
+                      <img src={menuItem.iconRightWhite} alt="dropdown" />
+                      )
+                      }
                   </span>
                   {visibleSubMenus[menuItem.id] && (
                     <ul className="submenu">
@@ -127,6 +150,25 @@ const SidebarStyled = styled.nav`
     margin-top: 15px;
     margin-right: 0.9em;
 
+    span.iconRight{
+      width: 12px;
+      position: absolute;
+      right: 3.5rem;
+      z-index: 10;
+    }
+
+    span.iconRight{
+      img {
+        
+        transition: transform 0.3s ease; 
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+      
+    }
+
     li {
       margin-bottom: 1rem;
       list-style-type: none;
@@ -136,16 +178,16 @@ const SidebarStyled = styled.nav`
       margin: 8px 0;
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       color: white;
+      gap: 2rem;
+    
     }
-    li span:nth-child(2){
-      margin-left: 5px;
-    }
+   
 
     ul li:hover {
-      background-color: hsl(75, 94%, 57%);
+      background-color: ${(props) => props.theme.btnColorPrimary};
       cursor: pointer;
       transition: 0.5s;
     }
@@ -159,24 +201,61 @@ const SidebarStyled = styled.nav`
       color: ${(props) => props.theme.colorFontPrimary};
       display: flex;
       align-items: center;
-      
       font-size: 13px;
       font-weight: 600;
 
       .label {
-        margin-right: 0.5rem;
+        margin-left: .2rem; 
+        gap: 2rem;
+       
       }
     }
+
+   
 
     ul {
       list-style: none;
       padding-left: 1rem;
       margin-top: 0.5rem;
     }
+    
+
+    ul.submenu a {
+      .icon {
+        margin-right: 0.5rem;
+      }
+    }
+
+
    
   }
 `;
 
+
+const SignoutButton = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: ${(props) => props.theme.colorFontPrimary};
+  gap: 0.5em;
+  font-size: 12px;
+  font-weight: 600;
+  
+  background-color: ${(props) => props.theme.btnColorPrimary};
+  border-radius: 15px;
+  padding: 10px 10px;
+  color: black;
+
+  .label {
+    margin-right: 0.3rem;
+  }
+
+  &:hover {
+    color: white;
+  }
+`;
+
+/*Profile Styled **/
 const ProfileStyled = styled.div`
   display: flex;
   flex-direction: row;
@@ -217,37 +296,19 @@ const ProfileImg = styled.div`
 const ProfileName = styled.h1`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   gap: 0.2em;
   font-size: 0.9rem;
-  color: ${(props) => props.theme.colorFontPrimary};
+  
 
-  span {
+  span{
     display: block;
+    color: ${(props) => props.theme.colorTextSecondary};
+    font-size: 14px;
+    font-weight: 600;
+    
     ;
   }
 `;
 
-const SignoutButton = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  color: ${(props) => props.theme.colorFontPrimary};
-  gap: 0.5em;
-  font-size: 12px;
-  font-weight: 600;
-  
-  background-color: ${(props) => props.theme.btnColorPrimary};
-  border-radius: 15px;
-  padding: 10px 10px;
-  color: black;
-
-  .label {
-    margin-right: 0.3rem;
-  }
-
-  &:hover {
-    color: white;
-  }
-`;
