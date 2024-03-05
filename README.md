@@ -23,6 +23,13 @@ Users should be able to:
 
 - View the optimal layout for the interface depending on their device's screen size
 - See hover and focus states for all interactive elements on the page
+- View the optimal layout for the app depending on their device's screen size
+- See hover states for all interactive elements on the page
+- Create, read, update, and delete boards and tasks
+- Receive form validations when trying to create/edit boards and tasks
+- Mark subtasks as complete and move tasks between columns
+- Toggle the theme between light/dark modes
+- Bonus: Allow users to drag and drop tasks to change their status and re-order them in a column
 
 ### Screenshot
 
