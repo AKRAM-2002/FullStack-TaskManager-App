@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { GlobalProvider } from "../context/globalProvider";
 import PropTypes from 'prop-types';
-
+import toast, {Toaster} from "react-hot-toast";
 
 export const ContextProvider = ({children}) => {
 
@@ -19,6 +19,7 @@ export const ContextProvider = ({children}) => {
     
   return (
     <GlobalProvider>
+      <Toaster />
         {children}
     </GlobalProvider>
   )

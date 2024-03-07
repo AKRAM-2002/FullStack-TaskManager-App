@@ -288,6 +288,7 @@ const ProfileOverlay = styled.div`
 
 const ProfileImg = styled.div`
   img {
+    width: 70px;
     border-radius: 50%;
     flex-shrink: 0;
   }
