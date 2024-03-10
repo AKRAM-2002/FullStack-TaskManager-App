@@ -1,10 +1,5 @@
 import axios from "axios";
 import express from "express";
-import { PrismaClient } from '@prisma/client';
-import { MongoClient } from 'mongodb';
-import { auth } from "@clerk/clerk-react";
-import prisma from "./utils/connect";
-
 
 
 const app = express();
@@ -24,82 +19,83 @@ app.get('/api/quotes/random', async (req, res) => {
 });
 
 
-app.get('/api/tasks', async (req, res) => {
-  try {
-    const tasks = await prisma.task.findMany();
-    res.json(tasks);
-  } catch (error) {
-    console.error('Error fetching tasks:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+// app.get('/api/tasks', async (req, res) => {
+//   try {
+//     const tasks = await prisma.task.findMany();
+//     res.header('Access-Control-Allow-Origin', '*'); 
+//     res.json(tasks);
+//   } catch (error) {
+//     console.error('Error fetching tasks:', error.message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
-app.put('/api/tasks/:id', async (req, res) => {
-  const { id } = req.params;
-  const { title, description } = req.body;
+// app.put('/api/tasks/:id', async (req, res) => {
+//   const { id } = req.params;
+//   const { title, description } = req.body;
 
-  try {
-    const updatedTask = await prisma.task.update({
-      where: { id },
-      data: { title, description },
-    });
+//   try {
+//     const updatedTask = await prisma.task.update({
+//       where: { id },
+//       data: { title, description },
+//     });
 
-    res.json(updatedTask);
-  } catch (error) {
-    console.error('Error updating task:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//     res.json(updatedTask);
+//   } catch (error) {
+//     console.error('Error updating task:', error.message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
-app.post('/api/tasks', async (req, res) => {
-  try {
-    const { userId } = auth();
+// app.post('/api/tasks', async (req, res) => {
+//   try {
+//     const { userId } = auth();
 
-    if(!userId) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+//     if(!userId) {
+//       return res.status(401).json({ error: 'Unauthorized' });
+//     }
 
-    const { title, description, date, completed, incompleted } = await req.json();
+//     const { title, description, date, completed, incompleted } = req.body();
 
-    if(!title || !description || !date ){
-      return res.status(400).json({ error: 'Missing Required Fields' });
-    }
+//     if(!title || !description || !date ){
+//       return res.status(400).json({ error: 'Missing Required Fields' });
+//     }
 
-    if (title.length < 3){
-      return res.status(400).json({ error: 'Title must be at least 3 characters' });
-    }
+//     if (title.length < 3){
+//       return res.status(400).json({ error: 'Title must be at least 3 characters' });
+//     }
 
-    const task = await prisma.task.create({
-      data: { 
-        title, 
-        description, 
-        date, 
-        isCompleted: completed, 
-        incompleted: incompleted, 
-        userId ,
-      },
-    });
+//     const task = await prisma.task.create({
+//       data: { 
+//         title, 
+//         description, 
+//         date, 
+//         isCompleted: completed, 
+//         incompleted: incompleted, 
+//         userId ,
+//       },
+//     });
 
-    return res.json(task);
-  } catch (error) {
-    console.error('Error creating task:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//     return res.json(task);
+//   } catch (error) {
+//     console.error('Error creating task:', error.message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
-app.delete('/api/tasks/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const deletedTask = await prisma.task.delete({
-      where: { id },
-    });
-    res.json(deletedTask);
+// app.delete('/api/tasks/:id', async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     const deletedTask = await prisma.task.delete({
+//       where: { id },
+//     });
+//     res.json(deletedTask);
     
-  } catch (error) {
-    console.error('Error deleting task:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//   } catch (error) {
+//     console.error('Error deleting task:', error.message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
 
 const PORT = process.env.PORT || 3001; 
